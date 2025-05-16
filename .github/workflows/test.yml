@@ -6,12 +6,15 @@ on:
       - main
 
 jobs:
-  test-jobs:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Print testing
-        run: echo "testing"
+      - name: Get Latest Tag
+        id: latest-tag
+        run: |
+          echo "testing doang tag=$(git tag -l | grep -E '^.*\+python$' | sed -r 's/\+python//g' \
+            | sed '/-/!{s/$/_/;}' | sort -V | sed 's/_$//' | tail -1)" >> "$GITHUB_OUTPUT"
