@@ -9,6 +9,8 @@ env:
   EC2_TAG_PROJECT: learning
   EC2_TAG_SERVICE: docker
   EC2_TAG_ENVIRONMENT: staging
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
 jobs:
   build-deploy:
@@ -96,3 +98,11 @@ jobs:
             docker pull ${{ steps.push-image.outputs.docker_image }}
 
             docker run -d -p 80:8080 --restart unless-stopped --name learning-app ${{ steps.push-image.outputs.docker_image }}
+      
+      - name: Slack Alert
+        uses: act10ns/slack@v2
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          config: .github/config/slack.yml
+          status: ${{ job.status }}
+          message: Running testing
