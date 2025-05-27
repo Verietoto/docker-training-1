@@ -102,7 +102,7 @@ jobs:
       
       - name: Slack Alert
         env:
-          SERVICE_VERSION: ${{ ssteps.bump-version.outputs.new_tag }}
+          SERVICE_VERSION: ${{ steps.bump-version.outputs.new_tag }}
         uses: act10ns/slack@v2
         with:
           config: .github/config/slack.yml
