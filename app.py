@@ -4,4 +4,4 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Testing worflow 2</p>"
+    return "<p>Running slack alert</p>"
