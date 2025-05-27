@@ -20,12 +20,6 @@ fields:
   - title: Job Status
     value: "{{jobStatus}}"
     short: true
-  - title: Actor
-    value: <{{mention.actor}}>
-    short: true
-  - title: Notify Group
-    value: <{{mention.group.tech-be}}>
-    short: true
   - title: Version
     value: "{{ env.SERVICE_VERSION }}"
     short: true
@@ -39,11 +33,11 @@ colors:
   cancelled: "warning"
 
 icons:
-  success: ":pepe_ok:"
-  failure: ":duarr:"
-  cancelled: ":warning:"
-  skipped: ":heavy_minus_sign:"
-  default: ":60fps_parrot:"
+  success: ':white_check_mark:'
+  failure: ':grimacing:'
+  cancelled: ':x:'
+  skipped: ':heavy_minus_sign:'
+  default: ':interrobang:'
 
 filter:
   steps:
@@ -54,6 +48,7 @@ filter:
     - test
     - sonar-scan
     - push-image
+    - deploy-ec2
     - check-image
     - reseed-database
     - deploy

@@ -1,4 +1,4 @@
-name: Test Workflow
+name: Deploy into staging workflow
 
 on:
   push:
@@ -76,6 +76,7 @@ jobs:
           echo "docker_image=${{ env.DOCKER_IMAGE }}" >> $GITHUB_OUTPUT
 
       - name: Execute remote SSH commands using SSH key
+        id: deploy-ec2
         if: success()
         uses: appleboy/ssh-action@v1
         with:
@@ -100,9 +101,11 @@ jobs:
             docker run -d -p 80:8080 --restart unless-stopped --name learning-app ${{ steps.push-image.outputs.docker_image }}
       
       - name: Slack Alert
+        env:
+          SERVICE_VERSION: ${{ ssteps.bump-version.outputs.new_tag }}
         uses: act10ns/slack@v2
         with:
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           config: .github/config/slack.yml
           status: ${{ job.status }}
-          message: Running testing
+          steps: ${{ toJson(steps) }}
+        if: always()
